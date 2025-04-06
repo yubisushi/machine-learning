@@ -1,0 +1,38 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+x = pd.read_csv('/content/data0405.csv', usecols=['x']).values
+y = pd.read_csv('/content/data0405.csv', usecols=['y']).values
+
+w0 = 0
+w1 = 0
+w2 = 0
+
+epochs = 500
+alpha = 0.001
+
+n = float(len(x))
+
+for i in range(epochs):
+    y_pred = w2 * x**2 + w1 * x + w0
+    dw2 = (1/n) * sum(x**2 * (y_pred - y))
+    dw1 = (1/n) * sum(x * (y_pred - y))
+    dw0 = (1/n) * sum(y_pred - y)
+    w2 = w2 - alpha * dw2
+    w1 = w1 - alpha * dw1
+    w0 = w0 - alpha * dw0
+
+sorted_indices = np.argsort(x.flatten())
+x_sorted = x[sorted_indices]
+y_sorted = y[sorted_indices]
+y_pred_sorted = w2 * x_sorted**2 + w1 * x_sorted + w0
+
+plt.figure(figsize=(6, 4))
+plt.title('Gradient Descent')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.plot(x_sorted, y_sorted, 'bo', label='Original data')
+plt.plot(x_sorted, y_pred_sorted, label='Fitted curve')
+plt.legend()
+plt.show()
