@@ -1,0 +1,34 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+x = pd.read_csv('/content/data0405.csv', usecols=['x']).values
+y = pd.read_csv('/content/data0405.csv', usecols=['y']).values
+
+
+A = np.hstack([x**i for i in range(11)])
+A = np.asmatrix(A)
+
+
+w = (A.T * A).I * A.T * y
+w = np.array(w)
+
+
+yp = sum(w[i] * x**i for i in range(11))
+
+
+x_flat = x.flatten()
+xp = sorted(x_flat)
+
+yp_sorted = sum(w[i] * np.array(xp).reshape(-1, 1)**i for i in range(11))
+
+
+plt.plot(x, y, "bo")  
+plt.plot(xp, yp_sorted, label="Fitted curve")  
+plt.title("Matrix inversion")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.grid(alpha=0.4)
+plt.legend()
+plt.show()
+
