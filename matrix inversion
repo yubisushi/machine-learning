@@ -1,0 +1,20 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+x = pd.read_csv('/content/data0405.csv',usecols = ['x']).values
+y = pd.read_csv('/content/data0405.csv',usecols = ['y']).values
+
+A = np.hstack([x**0,x])
+A = np.asmatrix(A)
+
+w = (A.T*A).I*A.T*y
+yp = A*w
+
+plt.plot(x,y,"bo")
+plt.plot(x,yp)
+plt.title("test")
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.grid(alpha = 0.4)
+plt.show()
